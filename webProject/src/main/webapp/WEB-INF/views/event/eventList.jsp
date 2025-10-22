@@ -1,3 +1,5 @@
+<%@page import="event.PageHandler"%>
+<%@page import="event.Category"%>
 <%@page import="event.Event"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -10,16 +12,17 @@
 <title>조회하기</title>
 </head>
 <body>
-<%List<Event> eventList = (List<Event>)request.getAttribute("eventList"); %>
 
-<div class="sidebar">
+<div>
     <h3>카테고리</h3>
     <ul>
         <li><a href="${pageContext.request.contextPath}/letsgu/event/list">전체 보기</a></li>
-        <li><a href="${pageContext.request.contextPath}/letsgu/event/list?category=1">스터디 / 모임</a></li>
-        <li><a href="${pageContext.request.contextPath}/letsgu/event/list?category=2">분실물</a></li>
-        <li><a href="${pageContext.request.contextPath}/letsgu/event/list?category=3">중고거래</a></li>
-        <li><a href="${pageContext.request.contextPath}/letsgu/event/list?category=4">동네 소식</a></li>
+    
+	    <c:forEach var ="category"  items = "${categoryList}">
+    	<li>
+	    	<a href="${pageContext.request.contextPath}/letsgu/event/list?category=${category.categoryId}">${category.categoryName}</a>
+	    </li>
+	    </c:forEach>
     </ul>
 </div>
 
@@ -34,7 +37,7 @@
     </c:choose>
 </h2>
 
-<table border="1">
+<table>
     <tr>
         <th>번호</th>
         <th>카테고리</th>
@@ -44,7 +47,7 @@
         <th>상태</th>
     </tr>
 
-    <c:forEach var="event" items="${eventList}">
+    <c:forEach var="event"  items="${eventList}">
         <tr>
             <td>${event.eventId}</td>
             <td>${event.categoryName}</td>
@@ -55,6 +58,23 @@
         </tr>
     </c:forEach>
 </table>
+
+<div>
+<c:if test="${empty param.category}">
+	<c:if test="${page.currentGrp > 1}">
+		<a href = "${pageContext.request.contextPath}/letsgu/event/list?p=${page.grpStart - 1}">이전</a>
+	</c:if>
+	
+	<c:forEach var = "i"  begin = "${page.grpStart}"  end = "${page.grpEnd}">
+		<a href = "${pageContext.request.contextPath}/letsgu/event/list?p=${i}">${i}</a>
+	</c:forEach>
+
+	<c:if test="${page.grpEnd < page.totalPage}">
+		<a href = "${pageContext.request.contextPath}/letsgu/event/list?p=${page.grpEnd + 1}">다음</a>
+	</c:if>
+</c:if>
+
+</div>
 
 </body>
 </html>

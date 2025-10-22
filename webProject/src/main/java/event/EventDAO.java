@@ -11,9 +11,11 @@ import java.util.List;
 
 public class EventDAO {
 
+	//학원컴 : String url = "jdbc:oracle:thin:@localhost:1521:testdb";
+	//노트북 : String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	// DB 연결
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:testdb";
+	String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	String user = "scott";
 	String password = "tiger";
 
@@ -53,7 +55,7 @@ public class EventDAO {
 			    "       ORDER BY e.created_at DESC" +
 			    "   ) inner_table" +
 			    ") " +
-			    "WHERE num BETWEEN ? AND ?";
+			    "WHERE num BETWEEN ? AND ? " + "ORDER BY event_id DESC";
 
 		List<Event> allList = new ArrayList<Event>();
 
@@ -102,8 +104,8 @@ public class EventDAO {
 	public List<Event> findEventsByCategory(int category_id) {
 		Connection con = dbcon();
 
-		String sql = "select e.*, c.category_name " + "from category c "
-				+ "join event e on c.category_id = e.category_id " + " where e.category_id = ?";
+		String sql = "SELECT e.*, c.category_name " + "FROM category c "
+				+ "JOIN event e ON c.category_id = e.category_id " + " WHERE e.category_id = ?";
 
 		List<Event> categoryList = new ArrayList<Event>();
 
