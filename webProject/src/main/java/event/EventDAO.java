@@ -145,4 +145,30 @@ public class EventDAO {
 		return categoryList;
 
 	}
+	
+	//총 레코드 수 조회
+	public int countAll() {
+		Connection con = dbcon();
+		
+		String sql = "select count(*) from event";
+		
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		int resultCnt = 0;
+		
+		try {
+			pst = con.prepareStatement(sql);
+			
+			rs = pst.executeQuery();
+			
+			if(rs.next()) {
+				resultCnt = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultCnt;
+	}
 }
