@@ -19,7 +19,23 @@ public class Event {
 	
 	public Event() {
 	}
+	
+	//이벤트 등록용 
+	public Event(int authorId, int categoryId, String title, String region, Date eventDate, int capacity,
+			String description, String uploadImg) {
+		super();
+		this.authorId = authorId;
+		this.categoryId = categoryId;
+		this.title = title;
+		this.region = region;
+		this.eventDate = eventDate;
+		this.capacity = capacity;
+		this.description = description;
+		this.uploadImg = uploadImg;
+	}
+	
 
+	//이벤트 조회용 
 	public Event(int eventId, int authorId, int categoryId, String categoryName, String title, String region,
 			Date eventDate, int capacity, String description, String status, Date createdAt, String uploadImg) {
 		this.eventId = eventId;
@@ -36,7 +52,6 @@ public class Event {
 		this.uploadImg = uploadImg;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "Event [eventId=" + eventId + ", authorId=" + authorId + ", categoryId=" + categoryId + ", categoryName="

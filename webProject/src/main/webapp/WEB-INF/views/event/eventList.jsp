@@ -14,13 +14,26 @@
 <body>
 
 <div>
+    <h3>지역</h3>
+    <ul>
+        <li><a href="${pageContext.request.contextPath}/letsgu/event/list?region=전체&category=${param.category}">전체 보기</a></li>
+    
+	    <c:forEach var ="region"  items = "${regionList}">
+    	<li>
+	    	<a href="${pageContext.request.contextPath}/letsgu/event/list?region=${region}&category=${param.category}">${region}</a>
+	    </li>
+	    </c:forEach>
+    </ul>
+</div>
+
+<div>
     <h3>카테고리</h3>
     <ul>
-        <li><a href="${pageContext.request.contextPath}/letsgu/event/list">전체 보기</a></li>
+        <li><a href="${pageContext.request.contextPath}/letsgu/event/list?region=${param.region}&category=">전체 보기</a></li>
     
 	    <c:forEach var ="category"  items = "${categoryList}">
     	<li>
-	    	<a href="${pageContext.request.contextPath}/letsgu/event/list?category=${category.categoryId}">${category.categoryName}</a>
+	    	<a href="${pageContext.request.contextPath}/letsgu/event/list?region=${param.region}&category=${category.categoryId}">${category.categoryName}</a>
 	    </li>
 	    </c:forEach>
     </ul>
