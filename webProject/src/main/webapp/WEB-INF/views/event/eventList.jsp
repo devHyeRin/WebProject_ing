@@ -58,6 +58,7 @@
         <th>지역</th>
         <th>모집일</th>
         <th>상태</th>
+        <th>사진</th>
     </tr>
 
     <c:forEach var="event"  items="${eventList}">
@@ -68,6 +69,16 @@
             <td>${event.region}</td>
             <td>${event.eventDate}</td>
             <td>${event.status}</td>
+            <td>
+            	<c:choose>
+            		<c:when test="${not empty event.uploadImg}">
+            			<img alt="이벤트 이미지" src="${pageContext.request.contextPath}/upload/${event.uploadImg}"  width ="100"  height="80">
+            		</c:when>     
+            		<c:otherwise>
+            			<span>(이미지 없음)</span>
+            		</c:otherwise>       	
+            	</c:choose>
+            </td>
         </tr>
     </c:forEach>
 </table>

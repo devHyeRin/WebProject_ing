@@ -15,7 +15,7 @@ public class EventDAO {
 	// 노트북 : String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	// DB 연결
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url="jdbc:oracle:thin:@localhost:1521:testdb";
+	String url="jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	String user = "scott";
 	String password = "tiger";
 
@@ -345,12 +345,108 @@ public class EventDAO {
 		
 	}
 	
+	//이벤트 상세보기
+	public Event findEventById(int eventId) {
+		Connection con = dbcon();
+		
+		String sql = "SELECT * FROM event WHERE event_id = ?";
+		
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		Event event = null;
+		
+		try {
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, eventId);
+			rs = pst.executeQuery();
+			
+			if(rs.next()) {
+				int event_Id = rs.getInt("event_id");
+				int authorId = rs.getInt("author_id");
+				int category_Id = rs.getInt("category_id");
+				String title = rs.getString("title");
+				String region = rs.getString("region");
+				Date eventDate = rs.getDate("event_date");
+				int capacity = rs.getInt("capacity");
+				String description = rs.getString("description");
+				String status = rs.getString("status");
+				Date createdAt = rs.getDate("created_at");
+				String uploadImg = rs.getString("upload_img");
+				
+				event = new Event(event_Id, authorId, category_Id, title, region, eventDate, capacity, description, status, createdAt, uploadImg);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return event;
+	}
 	
 	
-	//이벤트 수정
+	//이벤트 수정(본인 글만)
+	public int updateEvent(Event event) {
+		Connection con = dbcon();
+		
+		String sql = "UPDATE event " +
+							    "SET category_id = ?, " +
+							    "    title = ?, " +
+							    "    region = ?, " +
+							    "    event_date = ?, " +
+							    "    capacity = ?, " +
+							    "    description = ?, " +
+							    "    upload_img = ? " +
+							    "WHERE event_id = ? AND author_id = ?";
+		
+		PreparedStatement pst = null;
+		int result = 0;
+		
+		try {
+			pst = con.prepareStatement(sql);
+			
+			pst.setInt(1, event.getCategoryId());
+			pst.setString(2, event.getTitle());
+			pst.setString(3, event.getRegion());
+			pst.setDate(4, event.getEventDate());
+			pst.setInt(5, event.getCapacity());
+			pst.setString(6, event.getDescription());
+			pst.setString(7, event.getUploadImg());
+			pst.setInt(8, event.getEventId());
+			pst.setInt(9, event.getAuthorId());
+			
+			result = pst.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
-	//이벤트 삭제
 	
+	//이벤트 삭제(본인 글만)
+	public int deleteEvent(int eventId, int authorId) {
+		Connection con = dbcon();
+		
+		String sql = "DELETE FROM event WHERE event_id = ? AND author_id = ?";
+		
+		PreparedStatement pst = null;
+		int result = 0;
+		
+		try {
+			pst = con.prepareStatement(sql);
+			
+			pst.setInt(1, eventId);
+			pst.setInt(2, authorId);
+			
+			result = pst.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 }

@@ -39,10 +39,32 @@ public class EventService {
 			
 		}
 		
+		//이벤트 상세조회
+		public Event getEventById(int eventId) {
+			return dao.findEventById(eventId);
+		}
+		
 		
 		//이벤트 등록
 		public boolean regEvent(Event event) {
 			int cnt = dao.insertEvent(event);
+			
+			boolean result = cnt > 0 ? true : false;
+			return result;
+		}
+		
+		//이벤트 수정(본인 글만)
+		public boolean modifyEvent(Event event) {
+			int cnt = dao.updateEvent(event);
+			
+			boolean result = cnt > 0 ? true : false;
+			return result;
+		}
+		
+		
+		//이벤트 삭제
+		public boolean deleteEvent(int eventId, int authorId) {
+			int cnt = dao.deleteEvent(eventId, authorId);
 			
 			boolean result = cnt > 0 ? true : false;
 			return result;
