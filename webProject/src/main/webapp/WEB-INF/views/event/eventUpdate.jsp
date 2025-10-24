@@ -76,7 +76,7 @@
 
     <p>
         <button type="submit">수정하기</button>
-        <a href="${pageContext.request.contextPath}/letsgu/event/detail?eventId=${event.eventId}">취소</a>
+        <a href="${pageContext.request.contextPath}/letsgu/event/eventdetail?eventId=${event.eventId}">취소</a>
     </p>
 </form>
 

@@ -22,6 +22,8 @@ public class LoginServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		req.setCharacterEncoding("utf-8");
+		
 		int userId = Integer.parseInt(req.getParameter("user_id"));
 		
 		if (userId < 1 || userId > 5) {
@@ -34,7 +36,7 @@ public class LoginServlet extends HttpServlet{
         user.setUsername("테스트유저" + userId);
 
         HttpSession session = req.getSession();
-        session.setAttribute("loginUser", user);
+        session.setAttribute("loginId", user);
 
         System.out.println("로그인 성공: user_id=" + userId);
         resp.sendRedirect(req.getContextPath() + "/letsgu/event/reg");

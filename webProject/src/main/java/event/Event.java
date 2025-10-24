@@ -3,24 +3,26 @@ package event;
 import java.sql.Date;
 
 public class Event {
-	private int eventId; 							// 이벤트 ID (PK)
-	private int authorId; 						// 작성자 ID (USER FK)
-	private int categoryId;			 		// 카테고리 ID (CATEGORY FK)
-	private String categoryName; 		// 카테고리 이름
-	private String title; 							// 이벤트 제목
-	private String region; 						// 지역명
-	private Date eventDate; 					// 모집 종료일
-	private int capacity; 						// 모집 인원 수
-	private String description; 				// 이벤트 내용
-	private String status; 						// 상태 (ACTIVE / INACTIVE)
-	private Date createdAt; 					// 작성일자
-	private String uploadImg; 				// 업로드된 이미지 파일명
+	private int eventId; // 이벤트 ID (PK)
+	private int authorId; // 작성자 ID (USER FK)
+	private int categoryId; // 카테고리 ID (CATEGORY FK)
+	private String title; // 이벤트 제목
+	private String region; // 지역명
+	private Date eventDate; // 모집 종료일
+	private int capacity; // 모집 인원 수
+	private String description; // 이벤트 내용
+	private String status; // 상태 (ACTIVE / INACTIVE)
+	private Date createdAt; // 작성일자
+	private String uploadImg; // 업로드된 이미지 파일명
 
-	
+	// 출력용
+	private String categoryName; // 카테고리 이름
+	private String authorName;
+
 	public Event() {
 	}
-	
-	//이벤트 등록용 
+
+	// 이벤트 등록용
 	public Event(int authorId, int categoryId, String title, String region, Date eventDate, int capacity,
 			String description, String uploadImg) {
 		super();
@@ -34,10 +36,10 @@ public class Event {
 		this.uploadImg = uploadImg;
 	}
 	
-	//이벤트 상세조회용
+	// 이벤트 상세조회용
 	public Event(int eventId, int authorId, int categoryId, String title, String region, Date eventDate, int capacity,
-			String description, String status, Date createdAt, String uploadImg) {
-		super();
+			String description, String status, Date createdAt, String uploadImg, String categoryName,
+			String authorName) {
 		this.eventId = eventId;
 		this.authorId = authorId;
 		this.categoryId = categoryId;
@@ -49,11 +51,11 @@ public class Event {
 		this.status = status;
 		this.createdAt = createdAt;
 		this.uploadImg = uploadImg;
+		this.categoryName = categoryName;
+		this.authorName = authorName;
 	}
-	
-	
 
-	//이벤트 조회용 
+	// 이벤트 조회용
 	public Event(int eventId, int authorId, int categoryId, String categoryName, String title, String region,
 			Date eventDate, int capacity, String description, String status, Date createdAt, String uploadImg) {
 		this.eventId = eventId;
@@ -70,7 +72,6 @@ public class Event {
 		this.uploadImg = uploadImg;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Event [eventId=" + eventId + ", authorId=" + authorId + ", categoryId=" + categoryId + ", categoryName="
@@ -79,7 +80,6 @@ public class Event {
 				+ ", uploadImg=" + uploadImg + "]";
 	}
 
-	
 	public int getEventId() {
 		return eventId;
 	}
@@ -174,6 +174,14 @@ public class Event {
 
 	public void setUploadImg(String uploadImg) {
 		this.uploadImg = uploadImg;
+	}
+
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
 	}
 
 }

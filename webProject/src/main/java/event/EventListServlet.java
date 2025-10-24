@@ -41,7 +41,7 @@ public class EventListServlet extends HttpServlet {
 		PageHandler page = new PageHandler(pageSize, grpSize, totalRecords, currentPage);
 
 		// 전체 or 지역 선택 + 전체 or 카테고리 선택
-		if (regionParam != null && !regionParam.isEmpty()) { // 지역 선택된 경우
+		if (regionParam != null && !regionParam.isEmpty() && !"전체".equals(regionParam)) { // 지역 선택된 경우
 			String region = regionParam;
 
 			if (categoryParam != null && !categoryParam.isEmpty()) {

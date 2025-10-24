@@ -69,4 +69,18 @@ public class EventService {
 			boolean result = cnt > 0 ? true : false;
 			return result;
 		}
+		
+		//비활성화된 이벤트 조회(관리자용)
+		public List<Event> getInactiveEventList(){
+			return dao.findInactiveEventList();
+		}
+		
+		//비활성화된 이벤트 삭제(관리자용)
+		public boolean deleteInactiveEvent() {
+			int cnt = dao.deleteInactive();
+			
+			boolean result = cnt > 0 ? true : false;
+			return result;
+		}
+		
 }

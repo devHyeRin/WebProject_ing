@@ -26,22 +26,24 @@ public class EventRegServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		// 로그인 기능 구현 완료 후
-		HttpSession session = req.getSession();
-		Users loginUser = (Users) session.getAttribute("loginUser");
-		
-		if(loginUser == null) {
+		//로그인 세션 확인
+		Users loginUser = getLoginUser(req);
+
+		if (loginUser == null) {
 			resp.sendRedirect(req.getContextPath() + "/letsgu/login");
 			return;
 		}
+
 		
-	    
 	    CategoryService service = new CategoryService();
         List<Category> categoryList = service.getCategoryList();
-        req.setAttribute("categoryList", categoryList);
-
         List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구");    //임시
+
+        String categoryParam = req.getParameter("category_id");
+        
+        req.setAttribute("categoryList", categoryList);
         req.setAttribute("regionList", regionList);
+        req.setAttribute("selectedCategory", categoryParam);
 
 		req.getRequestDispatcher("/WEB-INF/views/event/eventReg.jsp").forward(req, resp);
 	}
@@ -52,8 +54,8 @@ public class EventRegServlet extends HttpServlet {
 
 		req.setCharacterEncoding("utf-8");
 
-		HttpSession session = req.getSession();
-		Users loginUser = (Users) session.getAttribute("loginUser");
+		//로그인 세션 확인(로그인 풀림 방지)
+		Users loginUser = getLoginUser(req);
 
 		if (loginUser == null) {
 			resp.sendRedirect(req.getContextPath() + "/letsgu/login");
@@ -118,8 +120,19 @@ public class EventRegServlet extends HttpServlet {
 			req.getRequestDispatcher("/WEB-INF/views/event/eventReg.jsp").forward(req, resp);
 		}
 	}
-
 	
+	//세션 검사
+	private Users getLoginUser(HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		
+		if(session != null) {
+			return (Users) session.getAttribute("loginId");
+			
+		}
+		return null;
+	}
+
+	//파일 처리
 	private String extractFileName(Part part) {
 		String contentDisp = part.getHeader("content-disposition");
 		for (String token : contentDisp.split(";")) {
