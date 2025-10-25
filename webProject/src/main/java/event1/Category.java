@@ -1,4 +1,4 @@
-package event;
+package event1;
 
 public class Category {
 

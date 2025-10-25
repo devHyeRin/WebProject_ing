@@ -1,4 +1,4 @@
-package event;
+package event1;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+
+import user.Users;
 
 @WebServlet("/letsgu/event/update")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)
@@ -63,7 +65,7 @@ public class EventUpdateServlet extends HttpServlet {
 			return;
 		}
 		
-		int userId = loginUser.getUser_id();
+		int userId = loginUser.getUserId();
 
 		// 이미지 저장 위치 설정
 		String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
@@ -72,19 +74,7 @@ public class EventUpdateServlet extends HttpServlet {
 			uploadDir.mkdirs();
 		}
 		System.out.println("파일 저장 경로: " + uploadPath);
-
-		int eventId = Integer.parseInt(req.getParameter("eventId"));
-		int categoryId = Integer.parseInt(req.getParameter("category_id"));
-		String title = req.getParameter("title");
-		String region = req.getParameter("region");
-		String eventDateStr = req.getParameter("event_date");
-		int capacity = Integer.parseInt(req.getParameter("capacity"));
-		String description = req.getParameter("description");
-
-		Date eventDate = null;
-		if (eventDateStr != null && !eventDateStr.isEmpty()) {
-			eventDate = Date.valueOf(eventDateStr);
-		}
+		
 
 		// 업로드 파일 이미지 변경 (기본은 기존 이미지 유지)
 		String oldUploadImg = req.getParameter("oldUploadImg");
@@ -97,6 +87,19 @@ public class EventUpdateServlet extends HttpServlet {
 			File file = new File(uploadPath, newFileName);
 			Files.copy(filePart.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			uploadImg = newFileName; // DB에는 새 파일명 저장
+		}
+		
+		int eventId = Integer.parseInt(req.getParameter("eventId"));
+		int categoryId = Integer.parseInt(req.getParameter("category_id"));
+		String title = req.getParameter("title");
+		String region = req.getParameter("region");
+		String eventDateStr = req.getParameter("event_date");
+		int capacity = Integer.parseInt(req.getParameter("capacity"));
+		String description = req.getParameter("description");
+
+		Date eventDate = null;
+		if (eventDateStr != null && !eventDateStr.isEmpty()) {
+			eventDate = Date.valueOf(eventDateStr);
 		}
 
 		Event event = new Event();
@@ -124,7 +127,7 @@ public class EventUpdateServlet extends HttpServlet {
 		HttpSession session = req.getSession(false);
 
 		if (session != null) {
-			return (Users) session.getAttribute("loginId");
+			return (Users) session.getAttribute("LOGIN_ID");
 
 		}
 		return null;

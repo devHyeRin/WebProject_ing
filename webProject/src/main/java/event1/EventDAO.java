@@ -1,4 +1,4 @@
-package event;
+package event1;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -15,7 +15,7 @@ public class EventDAO {
 	// 노트북 : String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	// DB 연결
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:testdb";
+	String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	String user = "scott";
 	String password = "tiger";
 
@@ -427,7 +427,7 @@ public class EventDAO {
 		return result;
 	}
 
-	// 비활성화된 이벤트 조회
+	// 비활성화된 이벤트 조회(관리자용)
 	public List<Event> findInactiveEventList() {
 		Connection con = dbcon();
 
@@ -464,7 +464,7 @@ public class EventDAO {
 		return inactiveList;
 	}
 
-	//비활성화 이벤트 삭제
+	//비활성화 이벤트 전체 삭제
 	public int deleteInactive() {
 		Connection con = dbcon();
 		

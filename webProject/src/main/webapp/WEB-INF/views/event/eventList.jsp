@@ -1,6 +1,6 @@
-<%@page import="event.PageHandler"%>
-<%@page import="event.Category"%>
-<%@page import="event.Event"%>
+<%@page import="event1.PageHandler"%>
+<%@page import="event1.Category"%>
+<%@page import="event1.Event"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>

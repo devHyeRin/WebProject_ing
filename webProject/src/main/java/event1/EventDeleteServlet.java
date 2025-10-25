@@ -1,4 +1,4 @@
-package event;
+package event1;
 
 import java.io.IOException;
 
@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import user.Users;
 
 @WebServlet("/letsgu/event/delete")
 public class EventDeleteServlet extends HttpServlet {
@@ -27,7 +29,7 @@ public class EventDeleteServlet extends HttpServlet {
 			return;
 		}
 		
-		int userId = loginUser.getUser_id();
+		int userId = loginUser.getUserId();
 
 		int eventId = Integer.parseInt(req.getParameter("eventId"));
 
@@ -44,7 +46,7 @@ public class EventDeleteServlet extends HttpServlet {
 		HttpSession session = req.getSession(false);
 
 		if (session != null) {
-			return (Users) session.getAttribute("loginId");
+			return (Users) session.getAttribute("LOGIN_ID");
 
 		}
 		return null;

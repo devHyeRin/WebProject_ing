@@ -1,4 +1,4 @@
-package event;
+package event1;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+
+import user.Users;
 
 @WebServlet("/letsgu/event/reg")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)
@@ -63,7 +65,7 @@ public class EventRegServlet extends HttpServlet {
 		}
 
 		// 로그인한 경우
-		int authorId = loginUser.getUser_id();
+		int authorId = loginUser.getUserId();
 
 		// 업로드 폴더 설정 (webapp/upload)
 		String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
@@ -126,7 +128,7 @@ public class EventRegServlet extends HttpServlet {
 		HttpSession session = req.getSession(false);
 		
 		if(session != null) {
-			return (Users) session.getAttribute("loginId");
+			return (Users) session.getAttribute("LOGIN_ID");
 			
 		}
 		return null;

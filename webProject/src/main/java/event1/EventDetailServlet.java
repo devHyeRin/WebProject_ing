@@ -1,4 +1,4 @@
-package event;
+package event1;
 
 import java.io.IOException;
 
@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import user.Users;
 
 @WebServlet("/letsgu/event/eventdetail")
 public class EventDetailServlet extends HttpServlet {
@@ -19,7 +21,7 @@ public class EventDetailServlet extends HttpServlet {
 //		req.getSession().setAttribute("userId", 2);     세션 테스트용
 		
 		Users loginId = getLoginUser(req);
-		req.setAttribute("loginId", loginId);
+		req.setAttribute("LOGIN_ID", loginId);
 
 		int eventId = Integer.parseInt(req.getParameter("eventId"));
 
@@ -36,7 +38,7 @@ public class EventDetailServlet extends HttpServlet {
 		HttpSession session = req.getSession(false);
 
 		if (session != null) {
-			return (Users) session.getAttribute("loginId");
+			return (Users) session.getAttribute("LOGIN_ID");
 
 		}
 		return null;
