@@ -36,41 +36,6 @@ public class Event {
 		this.uploadImg = uploadImg;
 	}
 	
-	// 이벤트 상세조회용
-	public Event(int eventId, int authorId, int categoryId, String title, String region, Date eventDate, int capacity,
-			String description, String status, Date createdAt, String uploadImg, String categoryName,
-			String authorName) {
-		this.eventId = eventId;
-		this.authorId = authorId;
-		this.categoryId = categoryId;
-		this.title = title;
-		this.region = region;
-		this.eventDate = eventDate;
-		this.capacity = capacity;
-		this.description = description;
-		this.status = status;
-		this.createdAt = createdAt;
-		this.uploadImg = uploadImg;
-		this.categoryName = categoryName;
-		this.authorName = authorName;
-	}
-
-	// 이벤트 조회용
-	public Event(int eventId, int authorId, int categoryId, String categoryName, String title, String region,
-			Date eventDate, int capacity, String description, String status, Date createdAt, String uploadImg) {
-		this.eventId = eventId;
-		this.authorId = authorId;
-		this.categoryId = categoryId;
-		this.categoryName = categoryName;
-		this.title = title;
-		this.region = region;
-		this.eventDate = eventDate;
-		this.capacity = capacity;
-		this.description = description;
-		this.status = status;
-		this.createdAt = createdAt;
-		this.uploadImg = uploadImg;
-	}
 
 	@Override
 	public String toString() {

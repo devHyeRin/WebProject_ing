@@ -8,6 +8,7 @@ public class Users {
 	private String email;
 	private String gender;
 	private String agegroup;
+	private String rule;
 
 	public Users() {
 		// TODO Auto-generated constructor stub
@@ -79,11 +80,19 @@ public class Users {
 	public void setAgegroup(String agegroup) {
 		this.agegroup = agegroup;
 	}
+	
+	public String getRule() {
+	    return rule;
+	}
+
+	public void setRule(String rule) {
+	    this.rule = rule;
+	}
 
 	@Override
 	public String toString() {
 		return "Users [userId=" + userId + ", id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email
-				+ ", gender=" + gender + ", agegroup=" + agegroup + "]";
+				+ ", gender=" + gender + ", agegroup=" + agegroup + ", rule= " + rule + "]";
 	}
 
 }

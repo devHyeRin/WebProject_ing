@@ -12,9 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/letsgu/event/list")
 public class EventListServlet extends HttpServlet {
 
+	private EventService e_service = new EventService();
+	private CategoryService c_service = new CategoryService();
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
+		
+		e_service.updateEventStatus();    //비활성화 이벤트 갱신
 
 		int currentPage = 1;
 		int pageSize = 5;
@@ -28,8 +33,6 @@ public class EventListServlet extends HttpServlet {
 		String regionParam = req.getParameter("region");
 		String fileName = req.getParameter("fileName");
 
-		EventService e_service = new EventService();
-		CategoryService c_service = new CategoryService();
 
 		List<Event> eventList = null;
 		List<Category> categoryList = null;

@@ -15,7 +15,7 @@ public class EventDAO {
 	// 노트북 : String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	// DB 연결
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:testdb";
+	String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	String user = "scott";
 	String password = "tiger";
 
@@ -48,8 +48,7 @@ public class EventDAO {
 
 		String sql = "SELECT * " + "FROM ( " + "    SELECT ROWNUM num, inner_table.* " + "    FROM ( "
 				+ "        SELECT e.*, c.category_name " + "        FROM category c "
-				+ "        JOIN event e ON c.category_id = e.category_id "
-				+ "        WHERE e.status = 'ACTIVE' "
+				+ "        JOIN event e ON c.category_id = e.category_id " + "        WHERE e.status = 'ACTIVE' "
 				+ "        ORDER BY e.created_at DESC, event_id DESC " + "    ) inner_table " + " ) "
 				+ " WHERE num BETWEEN ? AND ? " + " ORDER BY event_id DESC ";
 
@@ -67,21 +66,19 @@ public class EventDAO {
 			rs = pst.executeQuery();
 
 			while (rs.next()) {
-				int eventId = rs.getInt("event_id");
-				int authorId = rs.getInt("author_id");
-				int categoryId = rs.getInt("category_id");
-				String title = rs.getString("title");
-				String region = rs.getString("region");
-				Date eventDate = rs.getDate("event_date");
-				int capacity = rs.getInt("capacity");
-				String description = rs.getString("description");
-				String status = rs.getString("status");
-				Date createdAt = rs.getDate("created_at");
-				String uploadImg = rs.getString("upload_img");
-				String categoryName = rs.getString("category_name");
-
-				Event event = new Event(eventId, authorId, categoryId, categoryName, title, region, eventDate, capacity,
-						description, status, createdAt, uploadImg);
+				Event event = new Event();
+				event.setEventId(rs.getInt("event_id"));
+				event.setAuthorId(rs.getInt("author_id"));
+				event.setCategoryId(rs.getInt("category_id"));
+				event.setTitle(rs.getString("title"));
+				event.setRegion(rs.getString("region"));
+				event.setEventDate(rs.getDate("event_date"));
+				event.setCapacity(rs.getInt("capacity"));
+				event.setDescription(rs.getString("description"));
+				event.setStatus(rs.getString("status"));
+				event.setCreatedAt(rs.getDate("created_at"));
+				event.setUploadImg(rs.getString("upload_img"));
+				event.setCategoryName(rs.getString("category_name"));
 
 				allList.add(event);
 
@@ -116,21 +113,19 @@ public class EventDAO {
 			rs = pst.executeQuery();
 
 			while (rs.next()) {
-				int eventId = rs.getInt("event_id");
-				int authorId = rs.getInt("author_id");
-				int categoryId = rs.getInt("category_id");
-				String title = rs.getString("title");
-				String region = rs.getString("region");
-				Date eventDate = rs.getDate("event_date");
-				int capacity = rs.getInt("capacity");
-				String description = rs.getString("description");
-				String status = rs.getString("status");
-				Date createdAt = rs.getDate("created_at");
-				String uploadImg = rs.getString("upload_img");
-				String categoryName = rs.getString("category_name");
-
-				Event event = new Event(eventId, authorId, categoryId, categoryName, title, region, eventDate, capacity,
-						description, status, createdAt, uploadImg);
+				Event event = new Event();
+				event.setEventId(rs.getInt("event_id"));
+				event.setAuthorId(rs.getInt("author_id"));
+				event.setCategoryId(rs.getInt("category_id"));
+				event.setTitle(rs.getString("title"));
+				event.setRegion(rs.getString("region"));
+				event.setEventDate(rs.getDate("event_date"));
+				event.setCapacity(rs.getInt("capacity"));
+				event.setDescription(rs.getString("description"));
+				event.setStatus(rs.getString("status"));
+				event.setCreatedAt(rs.getDate("created_at"));
+				event.setUploadImg(rs.getString("upload_img"));
+				event.setCategoryName(rs.getString("category_name"));
 
 				categoryList.add(event);
 
@@ -165,21 +160,19 @@ public class EventDAO {
 			rs = pst.executeQuery();
 
 			while (rs.next()) {
-				int eventId = rs.getInt("event_id");
-				int authorId = rs.getInt("author_id");
-				int categoryId = rs.getInt("category_id");
-				String title = rs.getString("title");
-				String region_ = rs.getString("region");
-				Date eventDate = rs.getDate("event_date");
-				int capacity = rs.getInt("capacity");
-				String description = rs.getString("description");
-				String status = rs.getString("status");
-				Date createdAt = rs.getDate("created_at");
-				String uploadImg = rs.getString("upload_img");
-				String categoryName = rs.getString("category_name");
-
-				Event event = new Event(eventId, authorId, categoryId, categoryName, title, region_, eventDate,
-						capacity, description, status, createdAt, uploadImg);
+				Event event = new Event();
+				event.setEventId(rs.getInt("event_id"));
+				event.setAuthorId(rs.getInt("author_id"));
+				event.setCategoryId(rs.getInt("category_id"));
+				event.setTitle(rs.getString("title"));
+				event.setRegion(rs.getString("region"));
+				event.setEventDate(rs.getDate("event_date"));
+				event.setCapacity(rs.getInt("capacity"));
+				event.setDescription(rs.getString("description"));
+				event.setStatus(rs.getString("status"));
+				event.setCreatedAt(rs.getDate("created_at"));
+				event.setUploadImg(rs.getString("upload_img"));
+				event.setCategoryName(rs.getString("category_name"));
 
 				regionList.add(event);
 
@@ -213,21 +206,19 @@ public class EventDAO {
 			rs = pst.executeQuery();
 
 			while (rs.next()) {
-				int eventId = rs.getInt("event_id");
-				int authorId = rs.getInt("author_id");
-				int category_Id = rs.getInt("category_id");
-				String title = rs.getString("title");
-				String region_ = rs.getString("region");
-				Date eventDate = rs.getDate("event_date");
-				int capacity = rs.getInt("capacity");
-				String description = rs.getString("description");
-				String status = rs.getString("status");
-				Date createdAt = rs.getDate("created_at");
-				String uploadImg = rs.getString("upload_img");
-				String categoryName = rs.getString("category_name");
-
-				Event event = new Event(eventId, authorId, category_Id, categoryName, title, region_, eventDate,
-						capacity, description, status, createdAt, uploadImg);
+				Event event = new Event();
+				event.setEventId(rs.getInt("event_id"));
+				event.setAuthorId(rs.getInt("author_id"));
+				event.setCategoryId(rs.getInt("category_id"));
+				event.setTitle(rs.getString("title"));
+				event.setRegion(rs.getString("region"));
+				event.setEventDate(rs.getDate("event_date"));
+				event.setCapacity(rs.getInt("capacity"));
+				event.setDescription(rs.getString("description"));
+				event.setStatus(rs.getString("status"));
+				event.setCreatedAt(rs.getDate("created_at"));
+				event.setUploadImg(rs.getString("upload_img"));
+				event.setCategoryName(rs.getString("category_name"));
 
 				regCatList.add(event);
 			}
@@ -239,7 +230,7 @@ public class EventDAO {
 		return regCatList;
 	}
 
-	// 지역 조회
+	// 지역 목록 조회
 	public List<String> findAllRegion() {
 
 		Connection con = dbcon();
@@ -345,22 +336,21 @@ public class EventDAO {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				int event_Id = rs.getInt("event_id");
-				int authorId = rs.getInt("author_id");
-				int category_Id = rs.getInt("category_id");
-				String title = rs.getString("title");
-				String region = rs.getString("region");
-				Date eventDate = rs.getDate("event_date");
-				int capacity = rs.getInt("capacity");
-				String description = rs.getString("description");
-				String status = rs.getString("status");
-				Date createdAt = rs.getDate("created_at");
-				String uploadImg = rs.getString("upload_img");
-				String categoryName = rs.getString("category_name");
-				String authorName = rs.getString("author_name");
+				event = new Event();
+				event.setEventId(rs.getInt("event_id"));
+				event.setAuthorId(rs.getInt("author_id"));
+				event.setCategoryId(rs.getInt("category_id"));
+				event.setTitle(rs.getString("title"));
+				event.setRegion(rs.getString("region"));
+				event.setEventDate(rs.getDate("event_date"));
+				event.setCapacity(rs.getInt("capacity"));
+				event.setDescription(rs.getString("description"));
+				event.setStatus(rs.getString("status"));
+				event.setCreatedAt(rs.getDate("created_at"));
+				event.setUploadImg(rs.getString("upload_img"));
+				event.setCategoryName(rs.getString("category_name"));
+				event.setAuthorName(rs.getString("author_name"));
 
-				event = new Event(event_Id, authorId, category_Id, title, region, eventDate, capacity, description,
-						status, createdAt, uploadImg, categoryName, authorName);
 			}
 
 		} catch (SQLException e) {
@@ -427,6 +417,57 @@ public class EventDAO {
 		return result;
 	}
 
+	// 비활성화 처리
+	// 모집기간 경과 시 update
+	public void updateExpiredEvent() {
+
+		Connection con = dbcon();
+
+		String sql = "UPDATE event SET status = 'INACTIVE'" + "WHERE TRUNC(event_date) < TRUNC(SYSDATE) AND status = 'ACTIVE'";
+
+		PreparedStatement pst = null;
+
+		try {
+			pst = con.prepareStatement(sql);
+			int result = pst.executeUpdate();
+			System.out.println("[만료 이벤트 비활성화 처리] : " + result + "건 업데이트");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	// 비추천수 10회 이상 시 update
+	public void updateDislikeEvent() {
+		Connection con = dbcon();
+
+		String sql = "UPDATE event "
+							+ "SET status = 'INACTIVE' "
+							+ "WHERE status = 'ACTIVE' "
+							+ "AND event_id IN ( "
+							+ "    SELECT event_id "
+							+ "    FROM like_info "
+							+ "    WHERE type = 'BELIKE' "
+							+ "    GROUP BY event_id "
+							+ "    HAVING COUNT(*) >= 10 "
+							+ ")";
+
+		PreparedStatement pst = null;
+
+		try {
+			pst = con.prepareStatement(sql);
+			int result = pst.executeUpdate();
+			System.out.println("[비추천 10회 이상 이벤트 비활성화 처리] : " + result + "건 업데이트");
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
 	// 비활성화된 이벤트 조회(관리자용)
 	public List<Event> findInactiveEventList() {
 		Connection con = dbcon();
@@ -464,25 +505,25 @@ public class EventDAO {
 		return inactiveList;
 	}
 
-	//비활성화 이벤트 전체 삭제
+	// 비활성화 이벤트 전체 삭제(관리자용)
 	public int deleteInactive() {
 		Connection con = dbcon();
-		
+
 		String sql = "DELETE FROM event WHERE status = 'INACTIVE'";
-		
+
 		PreparedStatement pst = null;
 		int result = 0;
-		
+
 		try {
 			pst = con.prepareStatement(sql);
 			result = pst.executeUpdate();
-			
+			System.out.println("[비활성화 이벤트 전체 삭제(관리자)] : " + result + "건 삭제");
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result;
 	}
-	
-	
+
 }

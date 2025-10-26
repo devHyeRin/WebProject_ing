@@ -19,7 +19,9 @@
 	</div>
 
 	<div>
-		<a href="${pageContext.request.contextPath}/letsgu/admin/list">관리자 페이지</a>
+		<c:if test="${sessionScope.LOGIN_ID.rule == 'ADMIN' }">
+			<a href="${pageContext.request.contextPath}/letsgu/admin/list">관리자 페이지</a>
+		</c:if>
 	</div>
 
 	<div>
@@ -54,7 +56,7 @@
 
 	<h2>
 		<c:choose>
-			<c:when test="${not empty param.category}">
+			<c:when test="${not empty category}">
             ${eventList[0].categoryName} 카테고리 이벤트 목록
         </c:when>
 			<c:otherwise>

@@ -70,6 +70,13 @@ public class EventService {
 			return result;
 		}
 		
+		//비활성화 이벤트 자동 업데이트
+		public void updateEventStatus() {
+			dao.updateExpiredEvent();
+			dao.updateDislikeEvent();
+		}
+		
+		
 		//비활성화된 이벤트 조회(관리자용)
 		public List<Event> getInactiveEventList(){
 			return dao.findInactiveEventList();

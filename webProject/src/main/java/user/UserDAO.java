@@ -11,7 +11,7 @@ public class UserDAO {
 
 	// 오라클 경로
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:testdb";
+	String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	String user = "scott";
 	String password = "tiger";
 
@@ -131,7 +131,7 @@ public class UserDAO {
 	// 로그인
 	public Users findByLogin(String loginId, String password) {
 
-		String sql = "SELECT user_id, login_id, username, email, gender, age_group "
+		String sql = "SELECT user_id, login_id, username, email, gender, age_group, rule  "
 				+ "FROM USERS WHERE login_id = ? AND password = ?";
 
 		Connection con = null;
@@ -156,6 +156,7 @@ public class UserDAO {
                 user.setEmail(rs.getString("email"));
                 user.setGender(rs.getString("gender"));
                 user.setAgegroup(rs.getString("age_group"));
+                user.setRule(rs.getString("rule")); 
             }
 			
 		} catch (SQLException e) {

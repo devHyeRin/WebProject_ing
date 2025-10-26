@@ -28,7 +28,7 @@ public class EventRegServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		//로그인 세션 확인
+		// 로그인 세션 확인
 		Users loginUser = getLoginUser(req);
 
 		if (loginUser == null) {
@@ -36,27 +36,25 @@ public class EventRegServlet extends HttpServlet {
 			return;
 		}
 
-		
-	    CategoryService service = new CategoryService();
-        List<Category> categoryList = service.getCategoryList();
-        List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구");    //임시
+		CategoryService service = new CategoryService();
+		List<Category> categoryList = service.getCategoryList();
+		List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구"); // 임시
 
-        String categoryParam = req.getParameter("category_id");
-        
-        req.setAttribute("categoryList", categoryList);
-        req.setAttribute("regionList", regionList);
-        req.setAttribute("selectedCategory", categoryParam);
+		String categoryParam = req.getParameter("category_id");
+
+		req.setAttribute("categoryList", categoryList);
+		req.setAttribute("regionList", regionList);
+		req.setAttribute("selectedCategory", categoryParam);
 
 		req.getRequestDispatcher("/WEB-INF/views/event/eventReg.jsp").forward(req, resp);
 	}
 
-	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		req.setCharacterEncoding("utf-8");
 
-		//로그인 세션 확인(로그인 풀림 방지)
+		// 로그인 세션 확인(로그인 풀림 방지)
 		Users loginUser = getLoginUser(req);
 
 		if (loginUser == null) {
@@ -76,14 +74,13 @@ public class EventRegServlet extends HttpServlet {
 		System.out.println("파일 저장 경로: " + uploadPath);
 
 		// 파일 처리
-		Part filePart = req.getPart("uploadImg");         // form의 name 속성
+		Part filePart = req.getPart("uploadImg"); // form의 name 속성
 		String fileName = extractFileName(filePart);
 		if (fileName != null && !fileName.isEmpty()) {
 			File file = new File(uploadPath, fileName);
 			Files.copy(filePart.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 
-		
 		int categoryId = Integer.parseInt(req.getParameter("category_id"));
 		String title = req.getParameter("title");
 		String region = req.getParameter("region");
@@ -96,45 +93,45 @@ public class EventRegServlet extends HttpServlet {
 		if (eventDateStr != null && !eventDateStr.isEmpty()) {
 			eventDate = Date.valueOf(eventDateStr);
 		}
-		
+
 		int capacity = 0;
 		if (capacityStr != null && !capacityStr.isEmpty()) {
-		    capacity = Integer.parseInt(capacityStr);
+			capacity = Integer.parseInt(capacityStr);
 		}
-		
+
+		// 모델
 		Event event = new Event(authorId, categoryId, title, region, eventDate, capacity, description, uploadImg);
-		
-		EventService service = new EventService();	
+
+		EventService service = new EventService();
 		boolean result = service.regEvent(event);
-		
 
 		if (result) {
 			resp.sendRedirect(req.getContextPath() + "/letsgu/event/list");
 		} else {
-			
-			CategoryService c_service = new CategoryService();
-            List<Category> categoryList = c_service.getCategoryList();
-            List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구");
 
-            req.setAttribute("categoryList", categoryList);
-            req.setAttribute("regionList", regionList);
-            
+			CategoryService c_service = new CategoryService();
+			List<Category> categoryList = c_service.getCategoryList();
+			List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구");
+
+			req.setAttribute("categoryList", categoryList);
+			req.setAttribute("regionList", regionList);
+
 			req.getRequestDispatcher("/WEB-INF/views/event/eventReg.jsp").forward(req, resp);
 		}
 	}
-	
-	//세션 검사
+
+	// 세션 검사
 	private Users getLoginUser(HttpServletRequest req) {
 		HttpSession session = req.getSession(false);
-		
-		if(session != null) {
+
+		if (session != null) {
 			return (Users) session.getAttribute("LOGIN_ID");
-			
+
 		}
 		return null;
 	}
 
-	//파일 처리
+	// 파일 처리
 	private String extractFileName(Part part) {
 		String contentDisp = part.getHeader("content-disposition");
 		for (String token : contentDisp.split(";")) {

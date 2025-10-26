@@ -21,7 +21,7 @@ public class EventDetailServlet extends HttpServlet {
 //		req.getSession().setAttribute("userId", 2);     세션 테스트용
 		
 		Users loginId = getLoginUser(req);
-		req.setAttribute("LOGIN_ID", loginId);
+		req.setAttribute("loginUser", loginId);
 
 		int eventId = Integer.parseInt(req.getParameter("eventId"));
 
