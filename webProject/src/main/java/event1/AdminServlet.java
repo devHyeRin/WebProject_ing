@@ -35,11 +35,11 @@ public class AdminServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
 		
-		//세션 확인 메서드 호출
+		//관리자 인증
 		if(!isAdmin(req, resp)) return;
 
 		service.updateEventStatus(); // 비활성화 이벤트 갱신
-		List<Event> inactvieList = service.getInactiveEventList();
+		List<Event> inactvieList = service.getInactiveEventList();    //비활성화 목록
 
 		req.setAttribute("inactiveList", inactvieList);
 
@@ -52,12 +52,13 @@ public class AdminServlet extends HttpServlet {
 
 		req.setCharacterEncoding("utf-8");
 		
-		//세션 확인 메서드 호출
+		//관리자 인증
 		if (!isAdmin(req, resp)) return; 
 
 		boolean result = service.deleteInactiveEvent();
 
 		if (result) {
+			System.out.println("[비활성화 이벤트 삭제]");
 			resp.sendRedirect(req.getContextPath() + "/letsgu/admin/list");
 
 		}

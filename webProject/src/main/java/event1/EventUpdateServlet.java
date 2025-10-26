@@ -24,23 +24,24 @@ public class EventUpdateServlet extends HttpServlet {
 
 	private static final String UPLOAD_DIR = "upload";
 
+	private EventService e_service = new EventService();
+	private CategoryService c_service = new CategoryService();
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		// 로그인 세션 확인
 		Users loginUser = getLoginUser(req);
-
 		if (loginUser == null) {
 			resp.sendRedirect(req.getContextPath() + "/letsgu/login");
 			return;
 		}
 
+		
 		int eventId = Integer.parseInt(req.getParameter("eventId"));
-
-		EventService e_service = new EventService();
-		CategoryService c_service = new CategoryService();
-
 		Event event = e_service.getEventById(eventId);
+		
+		
 		List<Category> categoryList = c_service.getCategoryList();
 		List<String> regionList = e_service.getRegionList();
 
@@ -56,10 +57,8 @@ public class EventUpdateServlet extends HttpServlet {
 
 		req.setCharacterEncoding("utf-8");
 
-//		int userId = (int) req.getSession().getAttribute("userId");  세션 테스트용
 		// 로그인 세션 확인
 		Users loginUser = getLoginUser(req);
-
 		if (loginUser == null) {
 			resp.sendRedirect(req.getContextPath() + "/letsgu/login");
 			return;
@@ -67,28 +66,7 @@ public class EventUpdateServlet extends HttpServlet {
 		
 		int userId = loginUser.getUserId();
 
-		// 이미지 저장 위치 설정
-		String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
-		File uploadDir = new File(uploadPath);
-		if (!uploadDir.exists()) {
-			uploadDir.mkdirs();
-		}
-		System.out.println("파일 저장 경로: " + uploadPath);
-		
-
-		// 업로드 파일 이미지 변경 (기본은 기존 이미지 유지)
-		String oldUploadImg = req.getParameter("oldUploadImg");
-		String uploadImg = oldUploadImg;
-
-		Part filePart = req.getPart("uploadImg"); // form의 name 속성
-		String newFileName = extractFileName(filePart);
-
-		if (newFileName != null && !newFileName.isEmpty()) {
-			File file = new File(uploadPath, newFileName);
-			Files.copy(filePart.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			uploadImg = newFileName; // DB에는 새 파일명 저장
-		}
-		
+		//파라미터 추출
 		int eventId = Integer.parseInt(req.getParameter("eventId"));
 		int categoryId = Integer.parseInt(req.getParameter("category_id"));
 		String title = req.getParameter("title");
@@ -96,11 +74,13 @@ public class EventUpdateServlet extends HttpServlet {
 		String eventDateStr = req.getParameter("event_date");
 		int capacity = Integer.parseInt(req.getParameter("capacity"));
 		String description = req.getParameter("description");
+		String oldUploadImg = req.getParameter("oldUploadImg");
+		
+		Date eventDate = (isValid(eventDateStr)) ? Date.valueOf(eventDateStr) : null;
+		
+		//파일 업로드
+		String uploadImg = handleFileUpload(req, oldUploadImg);
 
-		Date eventDate = null;
-		if (eventDateStr != null && !eventDateStr.isEmpty()) {
-			eventDate = Date.valueOf(eventDateStr);
-		}
 
 		Event event = new Event();
 		event.setEventId(eventId);
@@ -113,8 +93,7 @@ public class EventUpdateServlet extends HttpServlet {
 		event.setDescription(description);
 		event.setUploadImg(uploadImg);
 
-		EventService service = new EventService();
-		boolean result = service.modifyEvent(event);
+		boolean result = e_service.modifyEvent(event);
 
 		if (result) {
 			resp.sendRedirect(req.getContextPath() + "/letsgu/event/eventdetail?eventId=" + eventId);
@@ -132,13 +111,38 @@ public class EventUpdateServlet extends HttpServlet {
 		}
 		return null;
 	}
+	
+	//문자열 유효성 검사
+	private boolean isValid(String value) {
+		return value != null && !value.trim().isEmpty();
+	}
+	
+	//파일 업로드 처리
+	private String handleFileUpload(HttpServletRequest req, String oldUploadImg) throws IOException, ServletException {
+		String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
+		File uploadDir = new File(uploadPath);
+		if (!uploadDir.exists()) uploadDir.mkdirs();
 
-	// 파일 처리
+		Part filePart = req.getPart("uploadImg");
+		String newFileName = extractFileName(filePart);
+
+		if (isValid(newFileName)) {
+			File newFile = new File(uploadPath, newFileName);
+			Files.copy(filePart.getInputStream(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			System.out.println("[파일 업로드] 저장 완료: " + newFileName);
+			return newFileName;
+		}
+		return oldUploadImg; // 새 파일 없으면 기존 유지
+	}
+
+	// 파일명 추출
 	private String extractFileName(Part part) {
-		String contentDisp = part.getHeader("content-disposition");
-		for (String token : contentDisp.split(";")) {
+		if (part == null) return null;
+		String header = part.getHeader("content-disposition");
+		for (String token : header.split(";")) {
 			if (token.trim().startsWith("filename")) {
-				return token.substring(token.indexOf('=') + 2, token.length() - 1);
+				String fileName = token.substring(token.indexOf('=') + 2, token.length() - 1);
+				return fileName.replace("\\", "/").substring(fileName.lastIndexOf("/") + 1);
 			}
 		}
 		return null;

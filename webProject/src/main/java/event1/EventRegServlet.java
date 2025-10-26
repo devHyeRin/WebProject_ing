@@ -24,6 +24,8 @@ import user.Users;
 public class EventRegServlet extends HttpServlet {
 
 	private static final String UPLOAD_DIR = "upload";
+	private CategoryService c_service = new CategoryService();
+	private EventService e_service = new EventService();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,15 +38,13 @@ public class EventRegServlet extends HttpServlet {
 			return;
 		}
 
-		CategoryService service = new CategoryService();
-		List<Category> categoryList = service.getCategoryList();
+		List<Category> categoryList = c_service.getCategoryList();
 		List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구"); // 임시 (나중에 지역 결정)
 
-		String categoryParam = req.getParameter("category_id");
 
 		req.setAttribute("categoryList", categoryList);
 		req.setAttribute("regionList", regionList);
-		req.setAttribute("selectedCategory", categoryParam);
+		req.setAttribute("selectedCategory", req.getParameter("category_id"));
 
 		req.getRequestDispatcher("/WEB-INF/views/event/eventReg.jsp").forward(req, resp);
 	}
@@ -64,57 +64,43 @@ public class EventRegServlet extends HttpServlet {
 
 		// 로그인한 경우
 		int authorId = loginUser.getUserId();
+		
+		//파일 업로드 (새 글 등록 - 기존 이미지 없음)
+		String uploadImg = handleFileUpload(req, null);
 
-		// 업로드 폴더 설정 (webapp/upload)
-		String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
-		File uploadDir = new File(uploadPath);
-		if (!uploadDir.exists()) {
-			uploadDir.mkdirs();
-		}
-		System.out.println("파일 저장 경로: " + uploadPath);
-
-		// 파일 처리
-		Part filePart = req.getPart("uploadImg"); // form의 name 속성
-		String fileName = extractFileName(filePart);
-		if (fileName != null && !fileName.isEmpty()) {
-			File file = new File(uploadPath, fileName);
-			Files.copy(filePart.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		}
-
+	
+		//값 가져오기
 		int categoryId = Integer.parseInt(req.getParameter("category_id"));
 		String title = req.getParameter("title");
 		String region = req.getParameter("region");
 		String eventDateStr = req.getParameter("event_date");
 		String capacityStr = req.getParameter("capacity");
 		String description = req.getParameter("description");
-		String uploadImg = fileName;
+		
 
 		Date eventDate = null;
-		if (eventDateStr != null && !eventDateStr.isEmpty()) {
+		if (isValid(eventDateStr)) {
 			eventDate = Date.valueOf(eventDateStr);
 		}
 
 		int capacity = 0;
-		if (capacityStr != null && !capacityStr.isEmpty()) {
+		if (isValid(capacityStr)) {
 			capacity = Integer.parseInt(capacityStr);
 		}
 
 		// 모델
 		Event event = new Event(authorId, categoryId, title, region, eventDate, capacity, description, uploadImg);
 
-		EventService service = new EventService();
-		boolean result = service.regEvent(event);
+		//등록처리
+		boolean result = e_service.regEvent(event);
 
 		if (result) {
+			System.out.println("[이벤트 등록 성공]");
 			resp.sendRedirect(req.getContextPath() + "/letsgu/event/list");
 		} else {
-
-			CategoryService c_service = new CategoryService();
-			List<Category> categoryList = c_service.getCategoryList();
-			List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구");
-
-			req.setAttribute("categoryList", categoryList);
-			req.setAttribute("regionList", regionList);
+			System.out.println("[이벤트 등록 실패]");
+			req.setAttribute("categoryList", c_service.getCategoryList());
+			req.setAttribute("regionList", Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구"));   //지역 임시 설정
 
 			req.getRequestDispatcher("/WEB-INF/views/event/eventReg.jsp").forward(req, resp);
 		}
@@ -130,6 +116,26 @@ public class EventRegServlet extends HttpServlet {
 		}
 		return null;
 	}
+	
+	// 파일 업로드 처리
+		private String handleFileUpload(HttpServletRequest req, String oldUploadImg)
+				throws IOException, ServletException {
+
+			String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
+			File uploadDir = new File(uploadPath);
+			if (!uploadDir.exists()) uploadDir.mkdirs();
+
+			Part filePart = req.getPart("uploadImg");
+			String newFileName = extractFileName(filePart);
+
+			if (isValid(newFileName)) {
+				File newFile = new File(uploadPath, newFileName);
+				Files.copy(filePart.getInputStream(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				System.out.println("[파일 업로드] 저장 완료: " + newFileName);
+				return newFileName;
+			}
+			return oldUploadImg; // 새 글 등록이므로 null 반환
+		}
 
 	// 파일 처리
 	private String extractFileName(Part part) {
@@ -140,5 +146,10 @@ public class EventRegServlet extends HttpServlet {
 			}
 		}
 		return null;
+	}
+	
+	//문자열 유효성 검사
+	private boolean isValid(String str) {
+		return str != null && !str.trim().isEmpty();
 	}
 }

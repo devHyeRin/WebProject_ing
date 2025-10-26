@@ -19,8 +19,6 @@ public class EventDeleteServlet extends HttpServlet {
 
 		req.setCharacterEncoding("utf-8");
 
-//		int userId = (int) req.getSession().getAttribute("userId");   세션 테스트용
-		
 		// 로그인 세션 확인
 		Users loginUser = getLoginUser(req);
 

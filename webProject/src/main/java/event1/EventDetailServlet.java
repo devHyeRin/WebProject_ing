@@ -18,15 +18,15 @@ public class EventDetailServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		req.setCharacterEncoding("utf-8");
-//		req.getSession().setAttribute("userId", 2);     세션 테스트용
-		
+
+		//세션 확인
 		Users loginId = getLoginUser(req);
 		req.setAttribute("loginUser", loginId);
 
 		int eventId = Integer.parseInt(req.getParameter("eventId"));
 
-		EventService e_service = new EventService();
-		Event event = e_service.getEventById(eventId);
+		EventService service = new EventService();
+		Event event = service.getEventById(eventId);
 
 		req.setAttribute("event", event);
 
