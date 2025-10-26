@@ -38,7 +38,7 @@ public class EventRegServlet extends HttpServlet {
 
 		CategoryService service = new CategoryService();
 		List<Category> categoryList = service.getCategoryList();
-		List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구"); // 임시
+		List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구"); // 임시 (나중에 지역 결정)
 
 		String categoryParam = req.getParameter("category_id");
 

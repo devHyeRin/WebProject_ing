@@ -37,6 +37,49 @@ public class EventDAO {
 		}
 		return con;
 	}
+	
+	//키워드 검색 (이벤트 제목)
+	public List<Event> findEventByTitle(String keyword){
+		Connection con = dbcon();
+		
+		String sql = "SELECT e.*, c.category_name  "
+	               + "FROM event e  "
+	               + "JOIN category c ON e.category_id = c.category_id  "
+	               + "WHERE INSTR(e.title, ?) > 0  "
+	               + "ORDER BY e.created_at DESC ";
+		
+		List<Event> searchList = new ArrayList<Event>();
+		
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		
+		try {
+			pst = con.prepareStatement(sql);
+			pst.setString(1, keyword);
+			rs = pst.executeQuery();
+			
+			while (rs.next()) {
+	            Event event = new Event();
+	            event.setEventId(rs.getInt("event_id"));
+	            event.setAuthorId(rs.getInt("author_id"));
+	            event.setCategoryId(rs.getInt("category_id"));
+	            event.setTitle(rs.getString("title"));
+	            event.setRegion(rs.getString("region"));
+	            event.setEventDate(rs.getDate("event_date"));
+	            event.setCapacity(rs.getInt("capacity"));
+	            event.setDescription(rs.getString("description"));
+	            event.setStatus(rs.getString("status"));
+	            event.setCreatedAt(rs.getDate("created_at"));
+	            event.setUploadImg(rs.getString("upload_img"));
+	            searchList.add(event);
+	        }
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return searchList;
+	}
 
 	// 이벤트 조회 (전체 지역 + 전체 카테고리 - 페이징 포함)
 	public List<Event> findAllEvents(int currentPage, int pageSize) {
