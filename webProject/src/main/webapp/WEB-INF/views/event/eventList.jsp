@@ -9,9 +9,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>이벤트 리스트</title>
+<title>이벤트 목록</title>
 </head>
 <body>
+
+	<!-- 공통 header -->
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+
+	<!--content-->
 
 	<!-- 검색바 -->
 	<form action="${pageContext.request.contextPath}/letsgu/event/search"
@@ -67,35 +72,25 @@
 	</div>
 
 	<h2>
-		<!-- 
 		<c:choose>
-			<c:when test="${not empty keyword}">
-				‘${keyword}’ 검색 결과
-			</c:when>
-			<c:when test="${not empty category}">
-				${eventList[0].categoryName} 카테고리 이벤트 목록
-			</c:when>
-			<c:otherwise>
-            전체 이벤트 목록
-        </c:otherwise>
-		</c:choose>
-		 -->
-		<c:choose>
-			<c:when test="${not empty param.region and param.region ne '전체' and not empty param.category}">
+			<c:when
+				test="${not empty param.region and param.region ne '전체' and not empty param.category}">
       			${param.region} 지역의 
       			<c:forEach var="category" items="${categoryList}">
-						<c:if test="${param.category == category.categoryId}">
+					<c:if test="${param.category == category.categoryId}">
           				${category.categoryName}
         				</c:if>
 				</c:forEach>
       				관련 소식
     		</c:when>
 
-			<c:when test="${not empty param.region and param.region ne '전체' and empty param.category}">
+			<c:when
+				test="${not empty param.region and param.region ne '전체' and empty param.category}">
      				 ${param.region} 지역의 전체 이벤트
     		</c:when>
 
-			<c:when test="${empty param.region or param.region eq '전체'} and not empty param.category}">
+			<c:when
+				test="${empty param.region or param.region eq '전체'} and not empty param.category}">
 				<c:forEach var="category" items="${categoryList}">
 					<c:if test="${param.category == category.categoryId}">
           					${category.categoryName}
@@ -169,6 +164,9 @@
 		</c:if>
 
 	</div>
+	
+	<!--공통 footer -->
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>
