@@ -15,7 +15,7 @@ public class EventDAO {
 	// 노트북 : String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	// DB 연결
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
+	String url = "jdbc:oracle:thin:@localhost:1521:testdb";
 	String user = "scott";
 	String password = "tiger";
 
@@ -492,7 +492,7 @@ public class EventDAO {
 							+ "AND event_id IN ( "
 							+ "    SELECT event_id "
 							+ "    FROM like_info "
-							+ "    WHERE type = 'BELIKE' "
+							+ "    WHERE type = 'DISLIKE' "
 							+ "    GROUP BY event_id "
 							+ "    HAVING COUNT(*) >= 10 "
 							+ ")";
@@ -568,5 +568,56 @@ public class EventDAO {
 		}
 		return result;
 	}
+	
+	//인기순 정렬 이벤트 조회
+	public List<Event> findEventsByPopularity(){
+			Connection con = dbcon();
+			
+			String sql = "SELECT * FROM ( "
+		               + " SELECT e.event_id, e.title, e.description, e.region, e.upload_img, e.created_at, "
+		               + " NVL(SUM(CASE WHEN l.type = 'LIKE' THEN 1 ELSE 0 END), 0) AS like_count, "
+		               + " NVL(SUM(CASE WHEN l.type = 'DISLIKE' THEN 1 ELSE 0 END), 0) AS dislike_count, "
+		               + " (NVL(SUM(CASE WHEN l.type = 'LIKE' THEN 1 ELSE 0 END), 0) "
+		               + "  - NVL(SUM(CASE WHEN l.type = 'DISLIKE' THEN 1 ELSE 0 END), 0)) AS popularity "
+		               + " FROM event e "
+		               + " LEFT JOIN like_info l ON e.event_id = l.event_id "
+		               + " WHERE e.status = 'ACTIVE' "
+		               + " GROUP BY e.event_id, e.title, e.description, e.region, e.upload_img, e.created_at "
+		               + " ORDER BY popularity DESC, e.created_at DESC "
+		               + ") WHERE ROWNUM <= 10";
+			
+			List<Event> sortList = new ArrayList<Event>();
+			
+			PreparedStatement pst = null;
+			ResultSet rs = null;
+			
+			try {
+				pst = con.prepareStatement(sql);
+				rs = pst.executeQuery();
+				
+				while (rs.next()) {
+		            Event event = new Event();
+		            event.setEventId(rs.getInt("event_id"));
+		            event.setTitle(rs.getString("title"));
+		            event.setDescription(rs.getString("description"));
+		            event.setRegion(rs.getString("region"));
+		            event.setCreatedAt(rs.getDate("created_at"));
+		            event.setUploadImg(rs.getString("upload_img"));
+		            event.setLikeCount(rs.getInt("like_count"));
+		            event.setDislikeCount(rs.getInt("dislike_count"));
+		            event.setPopularity(rs.getInt("popularity"));
+		            sortList.add(event);
+		        }
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return sortList;
+			
+			
+	        
+	}
 
+	
 }

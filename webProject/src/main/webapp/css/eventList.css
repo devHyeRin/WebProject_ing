@@ -1,0 +1,131 @@
+@charset "UTF-8";
+
+/*검색바, 인기순, 지역 선택 버튼*/
+.main-title {
+	display: flex;          
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	width: 100%;
+	margin: 0 auto;
+	padding: 2rem 0;
+	border-bottom: 0.1rem solid var(--gray-300);
+}
+
+.search-bar form {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+	justify-content: center;
+}
+
+.search-bar input {
+	width: 40rem;
+	padding: 0.8rem 1.2rem;
+	border: 0.1rem solid var(--gray-300);
+	border-radius: 0.8rem;
+	font-size: 1.4rem;
+}
+
+.search-bar button {
+	padding: 0.8rem 1.4rem;
+	background-color: var(--main-orange);
+	color: #fff;
+	border: none;
+	border-radius: 0.8rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.filter-group {
+	margin-top: 2rem;
+	display: flex;
+	align-items: center;
+	gap: 1.6rem;
+	justify-content: center;
+}
+
+.populer-filter a {
+	display: inline-block;
+	padding: 0.8rem 1.6rem;
+	border-radius: 2rem;
+	background-color: var(--light-orange);
+	color: var(--main-orange);
+	font-weight: 600;
+	border: 0.1rem solid #ffd6a5;
+}
+
+.populer-filter a:hover {
+	background-color: var(--main-orange);
+	color: #fff;
+}
+
+.region-filter {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+	justify-content: center;
+}
+
+.region-btn {
+	padding: 0.6rem 1.2rem;
+	border-radius: 1.5rem;
+	background-color: var(--gray-100);
+	color: var(--text-main);
+	font-size: 1.4rem;
+	transition: all 0.2s ease;
+}
+
+.region-btn:hover {
+	background-color: var(--gray-300);
+	color: var(--text-main);
+	font-weight: 600;
+}
+.region-btn.active {
+	background-color: var(--gray-300);
+	font-weight: 600;
+}
+
+/*메인 콘텐츠 영역*/
+/*content1*/
+.main-content {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	margin-top: 2rem;
+}
+
+.content1-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 0.1rem solid var(--gray-300);
+	padding-bottom: 1rem;
+}
+
+.content1-header h2 {
+	font-size: 2.4rem;
+	font-weight: 600;
+	color: var(--text-main);
+}
+
+.btn-write {
+	display: inline-block;
+	padding: 0.8rem 1.4rem;
+	background-color: var(--main-orange);
+	color: #fff;
+	font-weight: 600;
+	border-radius: 0.8rem;
+	transition: background 0.2s;
+}
+
+.btn-write:hover{
+	background-color: var(--light-orange);
+	border: 0.1rem solid var(--main-orange);
+	color : var(--main-orange);
+}
+
+/*content2*/
+
