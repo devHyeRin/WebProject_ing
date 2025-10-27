@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class BookMarkDAO {
 	String driver = "oracle.jdbc.driver.OracleDriver" ;
-	String url="jdbc:oracle:thin:@localhost:1521:testdb";
+	String url="jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	String user="scott";
 	String password="tiger";
   

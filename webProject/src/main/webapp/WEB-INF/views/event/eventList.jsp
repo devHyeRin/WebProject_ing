@@ -138,24 +138,24 @@
 						<c:otherwise>
 							<c:forEach var="e" items="${eventList}">
 								<!-- 이벤트 1개 -->
-								<div class="event-item">
+								<a href="${pageContext.request.contextPath}/letsgu/event/eventdetail?eventId=${e.eventId}" class="event-item">
 									<!-- 왼쪽 : 텍스트 -->
 									<div class="event-text">
-			                    		<h3 class="event-title">${e.title}</h3>
-			                    		<p class="event-desc">${e.description}</p>
-			                    		<div class="event-meta">
-			                        		<span>${e.region} · ${e.categoryName}</span>
-			                        		<span>작성일자 ${e.createdAt} </span>
-			                    		</div>
-			                		</div>
+				                    	<h3 class="event-title">${e.title}</h3>
+				                    	<p class="event-desc">${e.description}</p>
+				                    	<div class="event-meta">
+				                        	<span>${e.region} · ${e.categoryName}</span>
+				                        	<span>작성일자 ${e.createdAt} </span>
+				                    	</div>
+				                	</div>
 	                		
 			                		<!--오른쪽 : 이미지 썸네일  -->
 			                		<c:if test="${not empty e.uploadImg}">
 					                    <div class="event-img">
-					                        <img src="${pageContext.request.contextPath}/upload/${e.uploadImg}" alt="${e.title}">
+					                        <img src="${pageContext.request.contextPath}/upload/${e.uploadImg}" alt="(이미지 없음)">
 					                    </div>
 			                		</c:if>
-								</div>
+								</a>
 						
 							</c:forEach>
 						</c:otherwise>
@@ -163,7 +163,8 @@
 				
 				</section>
 				
-				<!-- 페이징 -->
+			</div>
+			<!-- 페이징 -->
 				<c:if test="${(empty param.region or param.region eq '전체') 
 						              and (empty param.category or param.category eq '') 
 						              and (empty param.sort) 
@@ -184,8 +185,6 @@
 				        </c:if>
 				    </div>
 				</c:if>
-				
-			</div>
 			
 		</div>
 	</main>

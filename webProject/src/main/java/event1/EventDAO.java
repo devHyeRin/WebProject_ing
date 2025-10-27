@@ -15,7 +15,7 @@ public class EventDAO {
 	// 노트북 : String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	// DB 연결
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:testdb";
+	String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	String user = "scott";
 	String password = "tiger";
 
@@ -63,6 +63,7 @@ public class EventDAO {
 	            event.setEventId(rs.getInt("event_id"));
 	            event.setAuthorId(rs.getInt("author_id"));
 	            event.setCategoryId(rs.getInt("category_id"));
+	            event.setCategoryName(rs.getString("category_name"));
 	            event.setTitle(rs.getString("title"));
 	            event.setRegion(rs.getString("region"));
 	            event.setEventDate(rs.getDate("event_date"));
@@ -574,15 +575,16 @@ public class EventDAO {
 			Connection con = dbcon();
 			
 			String sql = "SELECT * FROM ( "
-		               + " SELECT e.event_id, e.title, e.description, e.region, e.upload_img, e.created_at, "
+		               + " SELECT e.event_id, e.title, e.description, e.region, e.upload_img, e.created_at, c.category_name, "
 		               + " NVL(SUM(CASE WHEN l.type = 'LIKE' THEN 1 ELSE 0 END), 0) AS like_count, "
 		               + " NVL(SUM(CASE WHEN l.type = 'DISLIKE' THEN 1 ELSE 0 END), 0) AS dislike_count, "
 		               + " (NVL(SUM(CASE WHEN l.type = 'LIKE' THEN 1 ELSE 0 END), 0) "
 		               + "  - NVL(SUM(CASE WHEN l.type = 'DISLIKE' THEN 1 ELSE 0 END), 0)) AS popularity "
 		               + " FROM event e "
+		               + "  JOIN category c ON e.category_id = c.category_id "
 		               + " LEFT JOIN like_info l ON e.event_id = l.event_id "
 		               + " WHERE e.status = 'ACTIVE' "
-		               + " GROUP BY e.event_id, e.title, e.description, e.region, e.upload_img, e.created_at "
+		               + " GROUP BY e.event_id, e.title, e.description, e.region, e.upload_img, e.created_at, c.category_name  "
 		               + " ORDER BY popularity DESC, e.created_at DESC "
 		               + ") WHERE ROWNUM <= 10";
 			
@@ -603,6 +605,7 @@ public class EventDAO {
 		            event.setRegion(rs.getString("region"));
 		            event.setCreatedAt(rs.getDate("created_at"));
 		            event.setUploadImg(rs.getString("upload_img"));
+		            event.setCategoryName(rs.getString("category_name"));
 		            event.setLikeCount(rs.getInt("like_count"));
 		            event.setDislikeCount(rs.getInt("dislike_count"));
 		            event.setPopularity(rs.getInt("popularity"));
