@@ -31,10 +31,8 @@ public class EventDetailServlet extends HttpServlet {
 
 		String keyword = req.getParameter("keyword");
 
-		List<String> regionList = service.getRegionList();
 
 		req.setAttribute("event", event);
-		req.setAttribute("regionList", regionList);
 		req.setAttribute("keyword", keyword);
 
 		req.getRequestDispatcher("/WEB-INF/views/event/eventdetail.jsp").forward(req, resp);
