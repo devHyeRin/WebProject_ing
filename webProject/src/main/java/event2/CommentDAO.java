@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class CommentDAO {
 	String driver = "oracle.jdbc.driver.OracleDriver" ;
-	String url="jdbc:oracle:thin:@localhost:1521/XEPDB1";
+	String url="jdbc:oracle:thin:@localhost:1521:testdb";
 	String user="scott";
 	String password="tiger";
   

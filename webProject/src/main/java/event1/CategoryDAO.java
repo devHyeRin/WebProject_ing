@@ -14,7 +14,7 @@ public class CategoryDAO {
 	// 노트북 : String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	// DB 연결
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
+	String url = "jdbc:oracle:thin:@localhost:1521:testdb";
 	String user = "scott";
 	String password = "tiger";
 
