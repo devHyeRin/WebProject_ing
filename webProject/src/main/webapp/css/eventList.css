@@ -289,3 +289,26 @@
 	font-weight: 600;
 }
 
+/*추천수,비추천수*/
+.likes {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.4rem;
+  margin-top: 0.5rem;
+  color: #444;
+}
+
+.likes .material-symbols-outlined {
+  font-size: 1.8rem;
+  vertical-align: middle;
+}
+
+.likes .material-symbols-outlined:first-child {
+  color: #ff6b00;
+}
+
+.likes .material-symbols-outlined:last-child {
+  color: #808080; 
+}
+

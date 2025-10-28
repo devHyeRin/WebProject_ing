@@ -9,6 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/eventList.css">
 <title>이벤트 목록</title>
@@ -22,7 +23,7 @@
 		<!--content-->
 		<div class="main-title">
 			<!-- 검색바 영역 -->
-			<div class = search-bar>
+			<div class = "search-bar">
 				<form action="${pageContext.request.contextPath}/letsgu/event/search" method="get">
 					<input type="text" name="keyword" value="${keyword}" placeholder="관심 있는 이벤트를 검색해보세요 😊" required>
 					<button type="submit">검색</button>
@@ -58,7 +59,7 @@
 					<h2>
 						<c:choose>
 							<c:when test="${param.sort eq 'popular'}">
-								🔥 인기순 TOP 10 🔥
+								🔥 인기 TOP 5 🔥
 							</c:when>
 					
 							<c:when test="${not empty keyword}">
@@ -147,6 +148,12 @@
 				                        	<span>${e.region} · ${e.categoryName}</span>
 				                        	<span>작성일자 ${e.createdAt} </span>
 				                    	</div>
+				                    	<c:if test="${isPopular}">
+										    <div class="likes">
+										        <span class="material-symbols-outlined">thumb_up</span>${e.likeCount} 
+										        <span class="material-symbols-outlined">thumb_down</span>${e.dislikeCount}
+										    </div>
+										</c:if>
 				                	</div>
 	                		
 			                		<!--오른쪽 : 이미지 썸네일  -->
